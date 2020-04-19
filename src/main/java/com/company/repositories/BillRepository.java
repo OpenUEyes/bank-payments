@@ -8,8 +8,12 @@ import java.util.Optional;
 public class BillRepository implements CrudRepository<Bill> {
 
     @Override
-    public Optional<String> save(Bill entity) throws Exception {
+    public Optional<String> create(Bill entity) throws Exception {
         return Optional.empty();
+    }
+
+    @Override
+    public void update(Bill entity) throws Exception {// TODO change to message
     }
 
     @Override

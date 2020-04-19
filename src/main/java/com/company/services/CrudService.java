@@ -1,9 +1,9 @@
-package com.company.repositories;
+package com.company.services;
 
 import java.sql.SQLException;
 import java.util.Optional;
 
-public interface CrudRepository<T> {
+public interface CrudService<T> {
 
     Optional<String> create(T entity) throws Exception;
 

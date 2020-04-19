@@ -20,57 +20,54 @@ public class AccountRepository implements CrudRepository<Account> {
     private static final String SQL_SAVE_CHECK_PHONE_NUMBER = "SELECT id FROM account WHERE (phone_number) = (?)";
     private static final String SQL_SAVE = "INSERT INTO account(login, password, email, name, surname, phone_number)" +
             " VALUES(?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE account SET login = ?, password = ?, email = ?, name = ?," +
+            " surname = ?, phone_number = ? WHERE id = ?";
 
     private static final String SQL_FIND_BY_ID = "SELECT * FROM account WHERE (id) = (?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM account";
     private static final String SQL_DELETE = "DELETE FROM account WHERE (id) = (?)";
-    private static final String SQL_EXISTS = "SELECT id FROM account WHERE (login, password) = (?, ?)";
+    private static final String SQL_GET_ID = "SELECT id FROM account WHERE (login, password) = (?, ?)";
 
     @Override
-    public Optional<String> save(Account account) throws Exception {
+    public Optional<String> create(Account account) throws Exception {
         Connection connection = null;
-        Optional<String> message = Optional.empty();
+        Optional<String> resultMessage = Optional.empty();
         try {
             connection = ConnectionPull.getConnection();
 
-            connection.setAutoCommit(false);
+//            connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_LOGIN)) {
                 ps.setString(1, account.getLogin());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    message = Optional.of("Login already exists, please try another.");
+                    resultMessage = Optional.of("Login already exists, please try another.");
                     log.warn("START");
-                    return message;
+                    return resultMessage;
                 }
             }
             try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_EMAIL)) {
                 ps.setString(1, account.getEmail());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    message = Optional.of("Email already exists, please try another.");
-                    return message;
+                    resultMessage = Optional.of("Email already exists, please try another.");
+                    return resultMessage;
                 }
             }
             try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_PHONE_NUMBER)) {
                 ps.setString(1, account.getPhoneNumber());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    message = Optional.of("Phone number already exists, please try another.");
-                    return message;
+                    resultMessage = Optional.of("Phone number already exists, please try another.");
+                    return resultMessage;
                 }
             }
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE)) {
-                ps.setString(1, account.getLogin());
-                ps.setString(2, account.getPassword());
-                ps.setString(3, account.getEmail());
-                ps.setString(4, account.getName());
-                ps.setString(5, account.getSurname());
-                ps.setString(6, account.getPhoneNumber());
+                accountFill(account, ps);
                 ps.executeUpdate();
             }
-            connection.commit();
+//            connection.commit();
 
         } catch (SQLException exception) {
             if (connection != null) {
@@ -80,12 +77,45 @@ public class AccountRepository implements CrudRepository<Account> {
             throw exception;
         } finally {
             log.warn("END");
-            if (connection != null) {
-                connection.setAutoCommit(true);
-            }
+//            if (connection != null) {
+//                connection.setAutoCommit(true);
+//            }
             ConnectionPull.closeConnection(connection);
         }
-        return message;
+        return resultMessage;
+    }
+
+    //TODO change name
+    private void accountFill(Account account, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, account.getLogin());
+        preparedStatement.setString(2, account.getPassword());
+        preparedStatement.setString(3, account.getEmail());
+        preparedStatement.setString(4, account.getName());
+        preparedStatement.setString(5, account.getSurname());
+        preparedStatement.setString(6, account.getPhoneNumber());
+    }
+
+    @Override
+    public void update(Account account) throws Exception {
+        Connection connection = null;
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_UPDATE)) {
+                accountFill(account, ps);
+                ps.setLong(7, account.getId());
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException exception) {
+            if (connection != null) {
+                connection.rollback();
+            }
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
     }
 
     @Override
@@ -164,37 +194,40 @@ public class AccountRepository implements CrudRepository<Account> {
                 ps.executeUpdate();
             }
 
-        } catch (SQLException e) {
-            log.warn(e.getMessage());
-            throw new SQLException();
-        } finally {
-            ConnectionPull.closeConnection(connection);
-        }
-    }
-
-    public Optional<Long> exists(String login, String password) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = ConnectionPull.getConnection();
-
-            try (PreparedStatement ps = connection.prepareStatement(SQL_EXISTS)) {
-                ps.setString(1, login);
-                ps.setString(2, password);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    long id = rs.getLong(1);
-                    if (id > 0) {
-                        return Optional.of(id);
-                    }
-                }
-            }
-
         } catch (SQLException exception) {
             log.warn(exception.getMessage());
             throw exception;
         } finally {
             ConnectionPull.closeConnection(connection);
         }
-        return Optional.empty();
+    }
+
+    public Optional<Long> getId(String login, String password) throws SQLException {
+        Connection connection = null;
+        Optional<Long> resultId = Optional.empty();
+        try {            System.out.println("Before pull");
+
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_GET_ID)) {
+                ps.setString(1, login);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    long id = rs.getLong(1);
+                    if (id > 0) {
+                        resultId = Optional.of(id);
+                    }
+                }
+            }
+
+        } catch (SQLException exception) {
+            System.out.println(exception.getMessage());
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+        return resultId;
     }
 }

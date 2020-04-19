@@ -5,13 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.company</groupId>
-    <artifactId>bank</artifactId>
+    <artifactId>bank-payments</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-    <name>bank</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
-
+    <name>bank-payments</name>
+    <url>https://github.com/OpenUEyes/bank</url>
 
     <properties>
         <java.version>1.8</java.version>
@@ -42,7 +41,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.16</version>
+            <version>5.1.44</version>
         </dependency>
         <!--DATABASE dependency END-->
 
@@ -60,11 +59,11 @@
         <!--WEB dependency END-->
 
         <!--LOGGER dependency START-->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>1.2.17</version>
+                </dependency>
         <!--LOGGER dependency END-->
 
         <!--ADDITIONAL dependency START-->
