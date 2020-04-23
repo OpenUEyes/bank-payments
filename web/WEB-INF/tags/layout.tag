@@ -1,11 +1,13 @@
 <%@tag description="layout" pageEncoding="UTF-8" %>
 <%@attribute name="css" fragment="true" %>
+<%@attribute name="title" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
 <html>
 <head>
     <jsp:invoke fragment="css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/img/favicon.png">
+    <jsp:invoke fragment="title"/>
 </head>
 <body>
 <jsp:invoke fragment="header"/>

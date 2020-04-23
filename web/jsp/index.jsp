@@ -3,9 +3,12 @@
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 
 <p:project>
+    <jsp:attribute name="title">
+        <title>Bank Payments Project</title>
+    </jsp:attribute>
     <jsp:body>
         <main>
-            <div class="content hero">
+            <div class="content bg-hero">
                 <div class="form form-index">
                     <h3 class="header">Authentication</h3>
                     <form class="body" method="POST" action="${pageContext.request.contextPath}/authentication">
@@ -14,12 +17,12 @@
                                 <p>${errorMessage}</p>
                             </div>
                         </c:if>
-                        <div class="item">
+                        <div class="input">
                             <label for="loginID">Login:</label>
                             <input id="loginID" type="text" name="login" value=""
                                    placeholder="Enter login"/>
                         </div>
-                        <div class="item">
+                        <div class="input">
                             <label for="passwordID">Password:</label>
                             <input id="passwordID" type="password" name="password" value=""
                                    placeholder="Enter password"/>
@@ -28,7 +31,7 @@
                     </form>
                     <div class="pagination">
                         <a href="${pageContext.request.contextPath}/jsp/registration.jsp"
-                           class="button" role="button">To Registration</a>
+                           class="link" role="button">To Registration</a>
                     </div>
                 </div>
             </div>

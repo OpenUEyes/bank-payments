@@ -11,6 +11,49 @@ $textColor: #777;
   align-items: $align;
 }
 
+@mixin button($border-radius) {
+  .button {
+    align-self: flex-end;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border: 1px solid #777;
+    border-radius: $border-radius;
+    background-color: white;
+    outline: none;
+    color: $textColor;
+
+    &:active, &:hover {
+      background-color: #777;
+      color: white;
+    }
+
+    &:active, &:focus {
+      box-shadow: 0 0 12px 5px rgba(34, 164, 159, 0.3);
+    }
+  }
+}
+
+@mixin submit($border-radius) {
+  .submit {
+    position: absolute;
+    background: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: $border-radius;
+
+    &:hover {
+      background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+      border-radius: $border-radius;
+    }
+
+    &:active, &:focus {
+      box-shadow: 0 0 50px 30px rgba(153, 0, 144, 0.3);
+    }
+  }
+}
+
 * {
   font-family: "Mali", cursive;
 }
@@ -22,6 +65,7 @@ body {
 
 header {
   position: fixed;
+  z-index: 10;
   left: 0;
   top: 0;
   height: $headerHeight;
@@ -51,7 +95,7 @@ header {
     padding: 0;
   }
 
-  .item {
+  .input {
     @include flex($justify: center, $align: center);
     height: 100%;
     text-decoration: none;
@@ -68,97 +112,196 @@ header {
 
 main {
   margin-top: $headerHeight;
-  height: $mainHeight;
+  min-height: $mainHeight;
   width: 100%;
 }
 
-.hero {
-  background: radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("../img/home-bg.jpg") no-repeat bottom left;
-  background-size: cover;
-}
-
 .bg {
-  background: radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("../img/registration-bg.jpg") no-repeat bottom left;
-  background-size: cover;
-  //background: linear-gradient(#236466, #80657c);
-  //background: linear-gradient(#26b978, #ff512f);
+
+  &-hero {
+    background: radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("../img/background/home.jpg") no-repeat bottom left;
+    background-size: cover;
+  }
+
+  &-reg {
+    background: radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url("../img/background/registration.jpg") no-repeat bottom center;
+    background-size: cover;
+    //background: linear-gradient(#236466, #80657c);
+    //background: linear-gradient(#26b978, #ff512f);
+
+    &-success {
+      background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url("../img/background/registration_success.jpg") no-repeat center right;
+      background-size: cover;
+    }
+  }
+
+  &-bills {
+    background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url("../img/background/bills.png") repeat;
+    background-size: 20%;
+
+    //background: linear-gradient(to top left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)), radial-gradient(at top left, #ffeb00, #883d57);
+    //background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), radial-gradient(at top, #ffeb00, #000aff);
+  }
+
+  &-bill {
+    background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url("../img/background/bills.png") repeat;
+    background-size: 20%;
+  }
 }
 
 .content {
   @include flex($direction: column, $justify: center, $align: center);
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   color: $textColor;
 
+  &-header {
+    padding: 10px 20px;
+    background: white;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+
+  &-wrapper {
+    padding: 10px;
+    margin: 20px;
+  }
+
+  &-text {
+    background: white;
+    margin: 5px;
+    padding: 5px;
+    width: max-content;
+  }
+
+  hr {
+    width: 75%;
+  }
+
   .form {
+    $form-border-radius: 30px;
+    @include button(15px);
+    @include submit($form-border-radius);
+    position: relative;
+    z-index: 1;
+
     @include flex($direction: column, $justify: center, $align: center);
     background-color: white;
-    border-radius: 30px;
-    padding: 0 30px;
+    border-radius: $form-border-radius;
+    padding: 10px 30px;
+    margin: 20px 0;
 
     &-index {
-      width: 250px;
+      min-width: 250px;
     }
 
     &-reg {
       width: 300px;
+
+      &-success {
+        width: 250px;
+
+        .header {
+          color: #26b978;
+        }
+      }
+    }
+
+    &-transfer {
+      width: 75%;
+    }
+
+    &-bill {
+      background: navajowhite;
+      margin: 30px 0;
+
+      .header {
+        margin: 20px 20px !important;
+      }
+    }
+
+    &-credit, &-deposit {
+      margin: 10px;
     }
 
     .header {
       margin-bottom: 0;
     }
 
+    .secret {
+      font-size: xx-small;
+    }
+
     .body {
       @include flex($direction: column, $justify: center, $align: center);
       margin: 0;
       width: 100%;
+    }
 
-      .item {
-        @include flex($justify: space-between, $align: center);
-        width: 100%;
-        margin-bottom: 5px;
+    .transfer {
+      @include flex($justify: center, $align: center);
+      margin: 15px 0;
+    }
 
-        &:first-of-type {
-          margin-top: 15px;
-        }
+    .select {
+      color: $textColor;
+      height: 20px;
+      width: 280px;
+      margin: 0 10px;
+    }
 
-        label {
-          margin-right: 8px;
-        }
+    .field {
+      color: $textColor;
+      height: 30px;
+      margin: 0 20px 0 10px;
+      text-align: center;
 
-        input {
-          color: $textColor;
-
-          &:focus {
-            outline-color: lightgreen;
-          }
-        }
-      }
-
-      .error {
-        @include flex($justify: center, $align: center);
-        width: 100%;
-        color: indianred;
+      &-label {
+        margin-top: -5px;
         text-align: center;
       }
 
-      .button {
-        align-self: flex-end;
-        border-radius: 15px;
-        padding: 5px 10px;
-        margin: 5px 0;
-        border: 1px solid #777;
-        background-color: white;
+      &-card {
+        width: 150px;
+      }
 
-        &:active, &:hover {
-          background-color: #777;
-          color: white;
-        }
+      &-amount {
+        width: 50px;
+      }
+    }
 
-        &:active {
-          box-shadow: 0 0 12px 5px rgba(34, 164, 159, 0.3);
+    .input {
+      @include flex($justify: space-between, $align: center);
+      width: 100%;
+      margin-bottom: 5px;
+
+      &:first-of-type {
+        margin-top: 15px;
+      }
+
+      label {
+        margin-right: 8px;
+      }
+
+      input {
+        color: $textColor;
+
+        &:focus {
+          outline-color: #777;
         }
       }
+
+      .currency {
+        width: 60%;
+        text-align: center;
+      }
+    }
+
+    .error {
+      @include flex($justify: center, $align: center);
+      width: 100%;
+      color: indianred;
+      text-align: center;
     }
 
     .pagination {
@@ -166,7 +309,8 @@ main {
       padding: 10px 20px 10px;
       color: $textColor;
 
-      .button {
+      .link {
+        color: $textColor;
 
         &:hover {
           box-shadow: 0 8px 10px -5px rgba(34, 164, 159, 0.3);
@@ -175,8 +319,100 @@ main {
     }
   }
 
-  .button {
-    color: $textColor;
+
+  .cards {
+    @include flex($justify: space-around, $align: center);
+    width: 80%;
+    flex-wrap: wrap;
+    margin: 20px 5px;
+  }
+
+  .card {
+    $card-border-radius: 22px;
+    @include submit($card-border-radius);
+    position: relative;
+    z-index: 1;
+
+    @include flex($direction: column, $justify: space-evenly, $align: center);
+    width: 400px;
+    height: 250px;
+    background: linear-gradient(#268587, #876c74);
+    //background: linear-gradient(#236466, #80657c);
+    margin: 20px 10px;
+    border: 1px solid #767676;
+    box-shadow: 0 0 10px 3px rgba(255, 235, 248, 0.8), 3px 3px 3px 2px rgba(77, 77, 77, 0.8);
+    border-radius: $card-border-radius;
+
+    .bank {
+      align-self: flex-end;
+      width: 250px;
+      margin: 10px 0;
+      text-align: center;
+      font-size: 1.5rem;
+      color: silver;
+    }
+
+    .barcode {
+      width: 70px;
+      height: auto;
+
+      position: absolute;
+      left: 45px;
+      top: 25px;
+    }
+
+    .id {
+      width: 90%;
+      text-align: center;
+      color: #d3b607;
+      text-shadow: 3px 2px 0 #6e5d06, 4px 3px 4px black;
+      font-size: 1.8rem;
+      word-spacing: 15px;
+      margin: 10px 0 10px;
+    }
+
+    .validity {
+      margin: 0 20px -20px 0;
+      color: #789e8e;
+      text-shadow: 1px 1px 0 #22513d, 2px 2px 3px black;
+      font-size: 1.5rem;
+    }
+
+    .owner {
+      margin: -10 0 10px;
+      padding: 0 0 0 40px;
+      align-self: flex-start;
+      width: 120px;
+      color: #8a9e94;
+      text-shadow: 1px 1px 0 #245540, 2px 2px 3px black;
+    }
+
+    .type {
+      width: 90px;
+      height: auto;
+
+      position: absolute;
+      right: 40px;
+      bottom: 0;
+    }
+
+  }
+
+  .card-info {
+    //justify-self: flex-start;
+    @include flex($justify: space-around, $align: center);
+    flex-wrap: wrap;
+    margin: 20px 5px;
+  }
+
+  .money-wrapper {
+    @include flex($direction: column, $justify: center, $align: center);
+    margin: 20px;
+  }
+
+  .money-service {
+    @include flex($justify: space-between, $align: center);
+    width: 100%
   }
 }
 
