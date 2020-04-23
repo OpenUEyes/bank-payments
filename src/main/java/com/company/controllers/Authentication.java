@@ -27,11 +27,9 @@ public class Authentication extends HttpServlet {
         try {
             Optional<Long> id = accountService.getId(login, password);
             if (id.isPresent()) {
-                System.out.println(1);
                 HttpSession session = request.getSession();
                 session.setAttribute("id", id.get());
             } else {
-                System.out.println(2);
                 request.setAttribute("errorMessage", "Wrong login or password!");
                 dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
                 dispatcher.forward(request, response);
@@ -43,7 +41,7 @@ public class Authentication extends HttpServlet {
             dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
             dispatcher.forward(request, response);
         }
-        dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");// TODO change jsp
+        dispatcher = getServletContext().getRequestDispatcher("/jsp/bills.jsp");
         dispatcher.forward(request, response);
     }
 }

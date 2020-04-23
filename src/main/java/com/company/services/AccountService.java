@@ -12,7 +12,22 @@ public class AccountService implements CrudService<Account> {
 
     @Override
     public Optional<String> create(Account account) throws Exception {
-        return repository.create(account);
+        Optional<String> result;
+        result = repository.checkLogin(account.getLogin());
+        if (result.isPresent()) {
+            return result;
+        }
+        result = repository.checkEmail(account.getEmail());
+        if (result.isPresent()) {
+            return result;
+        }
+        result = repository.checkPhoneNumber(account.getPhoneNumber());
+        if (result.isPresent()) {
+            return result;
+        }
+        repository.create(account);
+
+        return result;
     }
 
     @Override

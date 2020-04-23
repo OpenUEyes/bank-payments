@@ -281,7 +281,7 @@ main {
       text-shadow: 1px 1px 0 #22513d, 2px 2px 3px black;
       font-size: 1.5rem; }
     .content .card .owner {
-      margin: -10 0 10px;
+      margin: -10px 0 10px;
       padding: 0 0 0 40px;
       align-self: flex-start;
       width: 120px;

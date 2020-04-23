@@ -13,79 +13,39 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Log4j
-public class AccountRepository implements CrudRepository<Account> {
+public class AccountRepository extends CrudRepository<Account> {
 
-    private static final String SQL_SAVE_CHECK_LOGIN = "SELECT id FROM account WHERE (login) = (?)";
-    private static final String SQL_SAVE_CHECK_EMAIL = "SELECT id FROM account WHERE (email) = (?)";
-    private static final String SQL_SAVE_CHECK_PHONE_NUMBER = "SELECT id FROM account WHERE (phone_number) = (?)";
-    private static final String SQL_SAVE = "INSERT INTO account(login, password, email, name, surname, phone_number)" +
+    private static final String SQL_CHECK_LOGIN = "SELECT id FROM account WHERE (login) = (?)";
+    private static final String SQL_CHECK_EMAIL = "SELECT id FROM account WHERE (email) = (?)";
+    private static final String SQL_CHECK_PHONE_NUMBER = "SELECT id FROM account WHERE (phone_number) = (?)";
+    private static final String SQL_CREATE = "INSERT INTO account(login, password, email, name, surname, phone_number)" +
             " VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE account SET login = ?, password = ?, email = ?, name = ?," +
             " surname = ?, phone_number = ? WHERE id = ?";
 
     private static final String SQL_FIND_BY_ID = "SELECT * FROM account WHERE (id) = (?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM account";
-    private static final String SQL_DELETE = "DELETE FROM account WHERE (id) = (?)";
     private static final String SQL_GET_ID = "SELECT id FROM account WHERE (login, password) = (?, ?)";
 
     @Override
-    public Optional<String> create(Account account) throws Exception {
+    public void create(Account account) throws Exception {
         Connection connection = null;
-        Optional<String> resultMessage = Optional.empty();
         try {
             connection = ConnectionPull.getConnection();
 
-//            connection.setAutoCommit(false);
-
-            try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_LOGIN)) {
-                ps.setString(1, account.getLogin());
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    resultMessage = Optional.of("Login already exists, please try another.");
-                    log.warn("START");
-                    return resultMessage;
-                }
-            }
-            try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_EMAIL)) {
-                ps.setString(1, account.getEmail());
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    resultMessage = Optional.of("Email already exists, please try another.");
-                    return resultMessage;
-                }
-            }
-            try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE_CHECK_PHONE_NUMBER)) {
-                ps.setString(1, account.getPhoneNumber());
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    resultMessage = Optional.of("Phone number already exists, please try another.");
-                    return resultMessage;
-                }
-            }
-
-            try (PreparedStatement ps = connection.prepareStatement(SQL_SAVE)) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL_CREATE)) {
                 accountFill(account, ps);
                 ps.executeUpdate();
             }
-//            connection.commit();
 
         } catch (SQLException exception) {
-            if (connection != null) {
-                connection.rollback();
-            }
             log.warn(exception.getMessage());
             throw exception;
         } finally {
-            log.warn("END");
-//            if (connection != null) {
-//                connection.setAutoCommit(true);
-//            }
             ConnectionPull.closeConnection(connection);
         }
-        return resultMessage;
     }
 
-    //TODO change name
     private void accountFill(Account account, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, account.getLogin());
         preparedStatement.setString(2, account.getPassword());
@@ -183,25 +143,6 @@ public class AccountRepository implements CrudRepository<Account> {
         return resultSet;
     }
 
-    @Override
-    public void deleteById(Long id) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = ConnectionPull.getConnection();
-
-            try (PreparedStatement ps = connection.prepareStatement(SQL_DELETE)) {
-                ps.setLong(1, id);
-                ps.executeUpdate();
-            }
-
-        } catch (SQLException exception) {
-            log.warn(exception.getMessage());
-            throw exception;
-        } finally {
-            ConnectionPull.closeConnection(connection);
-        }
-    }
-
     public Optional<Long> getId(String login, String password) throws SQLException {
         Connection connection = null;
         Optional<Long> resultId = Optional.empty();
@@ -229,5 +170,74 @@ public class AccountRepository implements CrudRepository<Account> {
             ConnectionPull.closeConnection(connection);
         }
         return resultId;
+    }
+
+    public Optional<String> checkLogin(String login) throws SQLException {
+        Connection connection = null;
+        Optional<String> resultMessage = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_CHECK_LOGIN)) {
+                ps.setString(1, login);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultMessage = Optional.of("Login already exists, please try another.");
+                    return resultMessage;
+                }
+            }
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+        return resultMessage;
+    }
+
+    public Optional<String> checkEmail(String email) throws SQLException {
+        Connection connection = null;
+        Optional<String> resultMessage = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_CHECK_EMAIL)) {
+                ps.setString(1, email);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultMessage = Optional.of("Email already exists, please try another.");
+                    return resultMessage;
+                }
+            }
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+        return resultMessage;
+    }
+
+    public Optional<String> checkPhoneNumber(String phoneNumber) throws SQLException {
+        Connection connection = null;
+        Optional<String> resultMessage = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_CHECK_PHONE_NUMBER)) {
+                ps.setString(1, phoneNumber);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultMessage = Optional.of("Phone number already exists, please try another.");
+                    return resultMessage;
+                }
+            }
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+        return resultMessage;
     }
 }

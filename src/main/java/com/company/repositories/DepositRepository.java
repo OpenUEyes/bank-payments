@@ -5,11 +5,10 @@ import com.company.model.Deposit;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class DepositRepository implements CrudRepository<Deposit> {
+public class DepositRepository extends CrudRepository<Deposit> {
 
     @Override
-    public Optional<String> create(Deposit entity) throws Exception {
-        return Optional.empty();
+    public void create(Deposit entity) throws Exception {
     }
 
     @Override
@@ -24,10 +23,5 @@ public class DepositRepository implements CrudRepository<Deposit> {
     @Override
     public Iterable<Deposit> findAll() throws SQLException {
         return null;
-    }
-
-    @Override
-    public void deleteById(Long id) throws SQLException {
-
     }
 }

@@ -30,9 +30,9 @@ public class Registration extends HttpServlet {
         AccountService accountService = new AccountService();
         RequestDispatcher dispatcher;
         try {
-            Optional<String> saveMessage = accountService.create(account);
-            if (saveMessage.isPresent()) {
-                request.setAttribute("errorMessage", saveMessage.get());
+            Optional<String> errorMessage = accountService.create(account);
+            if (errorMessage.isPresent()) {
+                request.setAttribute("errorMessage", errorMessage.get());
                 dispatcher = getServletContext().getRequestDispatcher("/jsp/registration.jsp");
                 dispatcher.forward(request, response);
             } else {

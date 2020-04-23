@@ -32,6 +32,7 @@
                                placeholder="USD"/>
                         <button class="button" type="submit">Send</button>
                     </form>
+                    <hr>
                     <h4 class="header">Or transfer between your cards</h4>
                     <form class="transfer" method="POST" action="${pageContext.request.contextPath}/transfer">
                         <c:if test="${not empty errorMessage}">
