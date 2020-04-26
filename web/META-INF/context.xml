@@ -3,7 +3,7 @@
     <Resource name="jdbc/bank"
               auth="Container"
               type="javax.sql.DataSource"
-              url="jdbc:mysql://localhost:3306/bank"
+              url="jdbc:mysql://localhost:3306/bank?autoReconnect=true&amp;useSSL=false"
               driverClassName="com.mysql.jdbc.Driver"
               maxActive="32"
               maxIdle="8"

@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface CrudService<T> {
 
-    Optional<String> create(T entity) throws Exception;
+    Optional<String> create(T entity) throws SQLException;
 
-    void update(T entity) throws Exception;
+    void update(T entity) throws SQLException;
 
     Optional<T> findById(Long id) throws SQLException;
 

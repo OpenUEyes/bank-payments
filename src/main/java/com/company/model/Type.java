@@ -1,5 +1,5 @@
 package com.company.model;
 
 public enum Type {
-    CREDIT, DEPOSIT
+    NOT_SIGNED, CREDIT, DEPOSIT
 }

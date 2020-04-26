@@ -1,6 +1,8 @@
 package com.company.controllers;
 
+import com.company.model.Bill;
 import com.company.services.AccountService;
+import com.company.services.BillService;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.RequestDispatcher;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Set;
 
 @Log4j
 @WebServlet(urlPatterns = "/authentication")
@@ -29,19 +32,23 @@ public class Authentication extends HttpServlet {
             if (id.isPresent()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("id", id.get());
+                BillService billService = new BillService();
+                Iterable<Bill> bills = billService.findAllByAccountId(id.get());
+                request.setAttribute("bills", bills);
+
+                dispatcher = getServletContext().getRequestDispatcher("/jsp/bills.jsp");
+                dispatcher.forward(request, response);
             } else {
                 request.setAttribute("errorMessage", "Wrong login or password!");
                 dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
                 dispatcher.forward(request, response);
             }
         } catch (SQLException e) {
-            System.out.println(3);
+            System.out.println(e.getMessage());
             log.warn(e.getMessage());
             request.setAttribute("errorMessage", "Authentication is temporarily unavailable!");
             dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
             dispatcher.forward(request, response);
         }
-        dispatcher = getServletContext().getRequestDispatcher("/jsp/bills.jsp");
-        dispatcher.forward(request, response);
     }
 }

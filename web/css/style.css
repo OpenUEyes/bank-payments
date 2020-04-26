@@ -47,10 +47,26 @@ header {
     text-decoration: none;
     color: #777;
     font-size: 1rem;
-    padding: 0 1.5vw; }
+    padding: 0 1.5vw;
+    margin: 0;
+    position: relative; }
     .navbar .input:hover {
       background-color: #777;
       color: white; }
+    .navbar .input .submit {
+      position: absolute;
+      background: none;
+      outline: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      cursor: pointer; }
+      .navbar .input .submit:hover {
+        background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+        border-radius: 0; }
+      .navbar .input .submit:active, .navbar .input .submit:focus {
+        box-shadow: 0 0 50px 30px rgba(153, 0, 144, 0.3); }
 
 main {
   margin-top: 10vh;
@@ -96,6 +112,13 @@ main {
     width: max-content; }
   .content hr {
     width: 75%; }
+  .content .error {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: indianred;
+    text-align: center; }
   .content .form {
     position: relative;
     z-index: 1;
@@ -115,7 +138,8 @@ main {
       border-radius: 15px;
       background-color: white;
       outline: none;
-      color: #777; }
+      color: #777;
+      cursor: pointer; }
       .content .form .button:active, .content .form .button:hover {
         background-color: #777;
         color: white; }
@@ -128,7 +152,8 @@ main {
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 30px; }
+      border-radius: 30px;
+      cursor: pointer; }
       .content .form .submit:hover {
         background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
         border-radius: 30px; }
@@ -142,8 +167,6 @@ main {
         width: 250px; }
         .content .form-reg-success .header {
           color: #26b978; }
-    .content .form-transfer {
-      width: 75%; }
     .content .form-bill {
       background: navajowhite;
       margin: 30px 0; }
@@ -203,14 +226,6 @@ main {
       .content .form .input .currency {
         width: 60%;
         text-align: center; }
-    .content .form .error {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      color: indianred;
-      text-align: center; }
     .content .form .pagination {
       margin: 0 10px 10px 10px;
       padding: 10px 20px 10px;
@@ -248,7 +263,8 @@ main {
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 22px; }
+      border-radius: 22px;
+      cursor: pointer; }
       .content .card .submit:hover {
         background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
         border-radius: 22px; }

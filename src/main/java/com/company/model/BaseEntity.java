@@ -24,7 +24,7 @@ public class BaseEntity implements Comparable<com.company.model.BaseEntity> {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        com.company.model.BaseEntity entity = (com.company.model.BaseEntity) obj;
+        BaseEntity entity = (BaseEntity) obj;
         return Objects.equals(id, entity.id);
     }
 

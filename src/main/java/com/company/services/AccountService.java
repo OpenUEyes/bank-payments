@@ -11,7 +11,7 @@ public class AccountService implements CrudService<Account> {
     private final AccountRepository repository = new AccountRepository();
 
     @Override
-    public Optional<String> create(Account account) throws Exception {
+    public Optional<String> create(Account account) throws SQLException {
         Optional<String> result;
         result = repository.checkLogin(account.getLogin());
         if (result.isPresent()) {
@@ -31,7 +31,7 @@ public class AccountService implements CrudService<Account> {
     }
 
     @Override
-    public void update(Account account) throws Exception {
+    public void update(Account account) throws SQLException {
         repository.update(account);
     }
 

@@ -21,6 +21,7 @@ $textColor: #777;
     background-color: white;
     outline: none;
     color: $textColor;
+    cursor: pointer;
 
     &:active, &:hover {
       background-color: #777;
@@ -33,7 +34,7 @@ $textColor: #777;
   }
 }
 
-@mixin submit($border-radius) {
+@mixin submit($border-radius: 0) {
   .submit {
     position: absolute;
     background: none;
@@ -42,6 +43,7 @@ $textColor: #777;
     height: 100%;
     border: none;
     border-radius: $border-radius;
+    cursor: pointer;
 
     &:hover {
       background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
@@ -102,11 +104,15 @@ header {
     color: $textColor;
     font-size: 1rem;
     padding: 0 1.5vw;
+    margin: 0;
+    position: relative;
 
     &:hover {
       background-color: #777;
       color: white;
     }
+
+    @include submit();
   }
 }
 
@@ -178,6 +184,13 @@ main {
     width: 75%;
   }
 
+  .error {
+    @include flex($justify: center, $align: center);
+    //width: 100%;
+    color: indianred;
+    text-align: center;
+  }
+
   .form {
     $form-border-radius: 30px;
     @include button(15px);
@@ -208,7 +221,7 @@ main {
     }
 
     &-transfer {
-      width: 75%;
+      //width: 75%;
     }
 
     &-bill {
@@ -295,13 +308,6 @@ main {
         width: 60%;
         text-align: center;
       }
-    }
-
-    .error {
-      @include flex($justify: center, $align: center);
-      width: 100%;
-      color: indianred;
-      text-align: center;
     }
 
     .pagination {

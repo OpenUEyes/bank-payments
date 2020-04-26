@@ -13,15 +13,15 @@
                     <div class="card">
                         <p class="bank">Bank Payments Project</p>
                         <img class="barcode" src="../img/card/barcode.png" alt="barcode"/>
-                        <p class="id">1234 5678 9012 3456</p>
-                        <p class="validity">07/25</p>
+                        <p class="id">${bill.number}</p>
+                        <p class="validity">${bill.validity.getMonthValue()}/${bill.validity.getYear()}</p>
                         <p class="owner">Roman Romanenko</p>
                         <img class="type" src="../img/card/mastercard.png" alt="mastercard"/>
                     </div>
                     <div class="content-wrapper">
                         <h3 class="content-header">Here is your card balance and validity:</h3>
-                        <p class="content-text">Balance: 10000 USD</p>
-                        <p class="content-text">Card valid to date: 04/April/2025</p>
+                        <p class="content-text">Balance: ${bill.balance} USD</p>
+                        <p class="content-text">Card valid to date: ${bill.validity}</p>
                     </div>
                 </div>
                 <hr>

@@ -8,11 +8,11 @@ import java.util.Optional;
 public class DepositRepository extends CrudRepository<Deposit> {
 
     @Override
-    public void create(Deposit entity) throws Exception {
+    public void create(Deposit entity) throws SQLException {
     }
 
     @Override
-    public void update(Deposit entity) throws Exception {// TODO change to message
+    public void update(Deposit entity) throws SQLException {// TODO change to message
     }
 
     @Override
