@@ -28,7 +28,7 @@ public class BillRepository extends CrudRepository<Bill> {
             connection = ConnectionPull.getConnection();
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_CREATE)) {
-                ps.setString(1, Type.NOT_SIGNED.toString().toUpperCase());
+                ps.setString(1, Type.UNSIGNED.toString().toUpperCase());
                 ps.setDouble(2, bill.getBalance());
                 ps.setDate(3, Date.valueOf(bill.getValidity()));
                 ps.setLong(4, bill.getAccountId());

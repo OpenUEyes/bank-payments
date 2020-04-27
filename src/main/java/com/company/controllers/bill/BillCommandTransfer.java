@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Log4j
-class CommandTransfer implements CommandBillAction {
+class BillCommandTransfer implements CommandAction {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -21,7 +21,7 @@ class CommandTransfer implements CommandBillAction {
         Long toId = Long.valueOf(request.getParameter("recipientId"));
         RequestDispatcher dispatcher;
         final BillService service = new BillService();
-        final Long id = (Long) request.getSession().getAttribute("id");
+        final Long id = (Long) request.getSession().getAttribute("accountId");
 
         try {
 

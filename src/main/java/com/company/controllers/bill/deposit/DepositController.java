@@ -1,5 +1,6 @@
-package com.company.controllers.bill;
+package com.company.controllers.bill.deposit;
 
+import com.company.controllers.bill.CommandAction;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
@@ -10,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log4j
-@WebServlet(urlPatterns = "/bill")
-public class BillController extends HttpServlet {
+@WebServlet(urlPatterns = "/deposit")
+public class DepositController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BillActionFactory actionFactory = new BillActionFactory();
+        DepositActionFactory actionFactory = new DepositActionFactory();
         CommandAction action = actionFactory.defineCommand(request);
         action.execute(request, response);
     }

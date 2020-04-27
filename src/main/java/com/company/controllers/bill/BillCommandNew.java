@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Log4j
-class CommandNew implements CommandBillAction {
+class BillCommandNew implements CommandAction {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,11 +22,11 @@ class CommandNew implements CommandBillAction {
         Bill bill = Bill.builder()
                 .balance(0.0)
                 .validity(LocalDate.now().plusYears(billValidityYearsPeriod))
-                .accountId((Long) request.getSession().getAttribute("id"))
+                .accountId((Long) request.getSession().getAttribute("accountId"))
                 .build();
         RequestDispatcher dispatcher;
         final BillService service = new BillService();
-        Long id = (Long) request.getSession().getAttribute("id");
+        Long id = (Long) request.getSession().getAttribute("accountId");
 
         try {
             Optional<String> errorMessage = service.create(bill);

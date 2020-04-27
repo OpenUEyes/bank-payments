@@ -31,7 +31,7 @@ public class Authentication extends HttpServlet {
             Optional<Long> id = accountService.getId(login, password);
             if (id.isPresent()) {
                 HttpSession session = request.getSession();
-                session.setAttribute("id", id.get());
+                session.setAttribute("accountId", id.get());
                 BillService billService = new BillService();
                 Iterable<Bill> bills = billService.findAllByAccountId(id.get());
                 request.setAttribute("bills", bills);

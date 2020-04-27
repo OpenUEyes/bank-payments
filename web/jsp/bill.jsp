@@ -20,67 +20,78 @@
                     </div>
                     <div class="content-wrapper">
                         <h3 class="content-header">Here is your card balance and validity:</h3>
-                        <p class="content-text">Balance: ${bill.balance} USD</p>
+                        <p class="content-text">Balance: ${bill.balance} UAH</p>
                         <p class="content-text">Card valid to date: ${bill.validity}</p>
                     </div>
                 </div>
-                <hr>
-                <div class="money-wrapper">
-                    <h2 class="content-header">You can take a credit or put a deposit</h2>
-                    <div class="money-service">
-                        <div class="form form-credit">
-                            <h3 class="header">Take credit is simple:</h3>
-                            <p class="secret">just 23% per month</p>
-                            <form class="body" method="POST" action="${pageContext.request.contextPath}/credit/new">
-                                <c:if test="${not empty errorMessage}">
-                                    <div class="error">
-                                        <p>${errorMessage}</p>
+                <c:if test="${bill.type eq 'UNSIGNED'}">
+                    <hr>
+                    <div class="money-wrapper">
+                        <h2 class="content-header">You can take a credit or put a deposit</h2>
+                        <div class="money-service">
+                            <div class="form form-credit">
+                                <h3 class="header">Take credit is simple:</h3>
+                                <p class="secret">just 23% per month</p>
+                                <form class="body" method="POST" action="${pageContext.request.contextPath}/credit">
+                                    <input type="hidden" name="action" value="new">
+                                    <input type="hidden" name="id" value="${bill.id}">
+
+                                    <c:if test="${not empty errorMessage}">
+                                        <div class="error">
+                                            <p>${errorMessage}</p>
+                                        </div>
+                                    </c:if>
+                                    <div class="input">
+                                        <label for="creditAmount">Amount:</label>
+                                        <input class="currency" id="creditAmount" type="text" name="amount" value=""
+                                               placeholder="UAH"/>
                                     </div>
-                                </c:if>
-                                <div class="input">
-                                    <label for="creditAmount">Amount:</label>
-                                    <input class="currency" id="creditAmount" type="text" name="amount" value=""
-                                           placeholder="USD"/>
-                                </div>
-                                <button class="button" type="submit">Take it</button>
-                            </form>
-                        </div>
-                        <div class="form form-deposit">
-                            <h3 class="header">Put deposit you can here:</h3>
-                            <h4 class="header">We save and multiply your money for you</h4>
-                            <form class="body" method="POST" action="${pageContext.request.contextPath}/deposit/new">
-                                <c:if test="${not empty errorMessage}">
-                                    <div class="error">
-                                        <p>${errorMessage}</p>
+                                    <button class="button" type="submit">Take it</button>
+                                </form>
+                            </div>
+                            <div class="form form-deposit">
+                                <h3 class="header">Put deposit you can here:</h3>
+                                <h4 class="header">We save and multiply your money for you</h4>
+                                <form class="body" method="POST" action="${pageContext.request.contextPath}/deposit">
+                                    <input type="hidden" name="action" value="new">
+                                    <input type="hidden" name="id" value="${bill.id}">
+                                    <c:if test="${not empty errorMessage}">
+                                        <div class="error">
+                                            <p>${errorMessage}</p>
+                                        </div>
+                                    </c:if>
+                                    <div class="input">
+                                        <label for="depositAmount">Amount:</label>
+                                        <input class="currency" id="depositAmount" type="text" name="amount" value=""
+                                               placeholder="UAH"/>
                                     </div>
-                                </c:if>
-                                <div class="input">
-                                    <label for="depositAmount">Amount:</label>
-                                    <input class="currency" id="depositAmount" type="text" name="amount" value=""
-                                           placeholder="USD"/>
-                                </div>
-                                <button class="button" type="submit">Put it</button>
-                            </form>
+                                    <button class="button" type="submit">Put it</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <div class="content-wrapper">
-                    <h3 class="content-header">Information about your credit:</h3>
-                    <p class="content-text">Debt: 5375.25 USD</p>
-                    <p class="content-text">Limit: 10 000</p>
-                    <p class="content-text">Percentage: 23% per month</p>
-                    <p class="content-text">Start: 04/April/2025</p>
-                    <p class="content-text">Deadline: 04/April/2026</p>
-                </div>
-                <hr>
-                <div class="content-wrapper">
-                    <h3 class="content-header">Information about your deposit:</h3>
-                    <p class="content-text">Amount: 10 000 USD</p>
-                    <p class="content-text">Rate: 1.2</p>
-                    <p class="content-text">Start: 04/April/2025</p>
-                    <p class="content-text">Finish: 04/April/2026</p>
-                </div>
+                </c:if>
+                <c:if test="${bill.type eq 'CREDIT'}">
+                    <hr>
+                    <div class="content-wrapper">
+                        <h3 class="content-header">Information about your credit:</h3>
+                        <p class="content-text">Debt: ${credit.debt} UAH</p>
+                        <p class="content-text">Limit: ${credit.limit}</p>
+                        <p class="content-text">Percentage: ${credit.percentage}% per month</p>
+                        <p class="content-text">Start: ${credit.start}</p>
+                        <p class="content-text">Deadline: ${credit.deadline}</p>
+                    </div>
+                </c:if>
+                <c:if test="${bill.type eq 'DEPOSIT'}">
+                    <hr>
+                    <div class="content-wrapper">
+                        <h3 class="content-header">Information about your deposit:</h3>
+                        <p class="content-text">Amount: ${deposit.amount} UAH</p>
+                        <p class="content-text">Rate: ${deposit.rate}</p>
+                        <p class="content-text">Start: ${deposit.start}</p>
+                        <p class="content-text">Finish: ${deposit.finish}</p>
+                    </div>
+                </c:if>
             </div>
         </main>
     </jsp:body>

@@ -25,7 +25,7 @@
                                placeholder="16 numbers"/>
                         <label class="field-label" for="field-amount1">Amount of money:</label>
                         <input class="field field-amount" id="field-amount1" type="text" name="amount" value=""
-                               placeholder="USD"/>
+                               placeholder="UAH"/>
                         <button class="button" type="submit">Send</button>
                     </form>
                     <hr>
@@ -46,7 +46,7 @@
                         </select>
                         <label class="field-label" for="field-amount2">Amount of money:</label>
                         <input class="field field-amount" id="field-amount2" type="text" name="amount" value=""
-                               placeholder="USD"/>
+                               placeholder="UAH"/>
                         <button class="button" type="submit">Send</button>
                     </form>
                 </div>

@@ -1,11 +1,13 @@
-package com.company.controllers.bill;
+package com.company.controllers.bill.credit;
 
+import com.company.controllers.bill.CommandAction;
+import com.company.controllers.bill.CommandDefault;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Log4j
-class BillActionFactory {
+class CreditActionFactory {
 
     CommandAction defineCommand(HttpServletRequest request) {
         CommandAction current = new CommandDefault();
@@ -14,7 +16,7 @@ class BillActionFactory {
             return current;
         }
         try {
-            BillCommandEnum currentEnum = BillCommandEnum.valueOf(action.toUpperCase());
+            CreditCommandEnum currentEnum = CreditCommandEnum.valueOf(action.toUpperCase());
             current = currentEnum.getCurrentCommand();
         } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());

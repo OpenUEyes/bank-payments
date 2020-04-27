@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Log4j
-class CommandSend implements CommandBillAction {
+class BillCommandSend implements CommandAction {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long fromId = Long.valueOf(request.getParameter("senderId"));
         RequestDispatcher dispatcher;
         final BillService service = new BillService();
-        final Long id = (Long) request.getSession().getAttribute("id");
+        final Long id = (Long) request.getSession().getAttribute("accountId");
 
         try {
 
