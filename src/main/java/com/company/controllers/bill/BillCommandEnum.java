@@ -2,12 +2,6 @@ package com.company.controllers.bill;
 
 enum BillCommandEnum{
 
-//    GET {
-//        {
-//            this.command = new BillCommandGet();
-//        }
-//    },
-
     NEW {
         {
             this.command = new BillCommandNew();

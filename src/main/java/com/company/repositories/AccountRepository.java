@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Log4j
-public class AccountRepository extends CrudRepository<Account> {
+public class AccountRepository implements CrudRepository<Account> {
 
     private static final String SQL_CHECK_LOGIN = "SELECT id FROM account WHERE (login) = (?)";
     private static final String SQL_CHECK_EMAIL = "SELECT id FROM account WHERE (email) = (?)";
@@ -22,7 +22,7 @@ public class AccountRepository extends CrudRepository<Account> {
             " VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE account SET login = ?, password = ?, email = ?, name = ?," +
             " surname = ?, phone_number = ? WHERE id = ?";
-
+    private static final String SQL_DELETE = "DELETE FROM account WHERE (id) = (?)";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM account WHERE (id) = (?)";
     private static final String SQL_FIND_ALL = "SELECT * FROM account";
     private static final String SQL_GET_ID = "SELECT id FROM account WHERE (login, password) = (?, ?)";
@@ -73,6 +73,25 @@ public class AccountRepository extends CrudRepository<Account> {
             if (connection != null) {
                 connection.rollback();
             }
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_DELETE)) {
+                ps.setLong(1, id);
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException exception) {
             log.warn(exception.getMessage());
             throw exception;
         } finally {

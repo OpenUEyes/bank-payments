@@ -17,7 +17,7 @@ public class DepositService implements CrudService<Deposit> {
 
     @Override
     public void update(Deposit deposit) throws SQLException {
-
+        repository.update(deposit);
     }
 
     @Override
@@ -31,11 +31,11 @@ public class DepositService implements CrudService<Deposit> {
 
     @Override
     public Iterable<Deposit> findAll() throws SQLException {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public void deleteById(Long id) throws SQLException {
-
+        repository.deleteById(id);
     }
 }

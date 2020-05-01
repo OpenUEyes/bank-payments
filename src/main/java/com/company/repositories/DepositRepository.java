@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.Optional;
 
 @Log4j
-public class DepositRepository extends CrudRepository<Deposit> {
+public class DepositRepository implements CrudRepository<Deposit> {
 
     private static final String SQL_CREATE = "INSERT INTO deposit(id, amount, rate, start, finish) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_FIND_BY_BILL_ID = "SELECT * FROM bill WHERE (id) = (?)";
@@ -146,5 +146,10 @@ public class DepositRepository extends CrudRepository<Deposit> {
     @Override
     public Iterable<Deposit> findAll() throws SQLException {
         return null;
+    }
+
+    @Override
+    public void deleteById(Long id) throws SQLException {
+
     }
 }

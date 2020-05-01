@@ -17,7 +17,7 @@ public class CreditService implements CrudService<Credit> {
 
     @Override
     public void update(Credit credit) throws SQLException {
-
+        repository.update(credit);
     }
 
     @Override
@@ -31,11 +31,11 @@ public class CreditService implements CrudService<Credit> {
 
     @Override
     public Iterable<Credit> findAll() throws SQLException {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public void deleteById(Long id) throws SQLException {
-
+        repository.deleteById(id);
     }
 }

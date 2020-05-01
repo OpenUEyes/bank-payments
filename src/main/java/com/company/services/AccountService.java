@@ -12,22 +12,21 @@ public class AccountService implements CrudService<Account> {
 
     @Override
     public Optional<String> create(Account account) throws SQLException {
-        Optional<String> result;
-        result = repository.checkLogin(account.getLogin());
-        if (result.isPresent()) {
-            return result;
+        Optional<String> errorMessage;
+        errorMessage = repository.checkLogin(account.getLogin());
+        if (errorMessage.isPresent()) {
+            return errorMessage;
         }
-        result = repository.checkEmail(account.getEmail());
-        if (result.isPresent()) {
-            return result;
+        errorMessage = repository.checkEmail(account.getEmail());
+        if (errorMessage.isPresent()) {
+            return errorMessage;
         }
-        result = repository.checkPhoneNumber(account.getPhoneNumber());
-        if (result.isPresent()) {
-            return result;
+        errorMessage = repository.checkPhoneNumber(account.getPhoneNumber());
+        if (errorMessage.isPresent()) {
+            return errorMessage;
         }
-        result = repository.create(account);
-
-        return result;
+        errorMessage = repository.create(account);
+        return errorMessage;
     }
 
     @Override

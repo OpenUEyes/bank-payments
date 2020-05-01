@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Log4j
-public class BillRepository extends CrudRepository<Bill> {
+public class BillRepository implements CrudRepository<Bill> {
 
     private static final String SQL_CREATE = "INSERT INTO bill(type, balance, validity, account_id) VALUES(?, ?, ?, ?)";
     private static final String SQL_UPDATE_FULL = "UPDATE bill SET type = ?, balance = ?, validity = ? WHERE id = ?";
@@ -179,6 +179,11 @@ public class BillRepository extends CrudRepository<Bill> {
         }
 
         return resultSet;
+    }
+
+    @Override
+    public void deleteById(Long id) throws SQLException {
+
     }
 
     public Iterable<Bill> findAllByAccountId(Long id) throws SQLException {

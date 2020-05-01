@@ -1,9 +1,7 @@
 package com.company.controllers.bill.deposit;
 
 import com.company.controllers.bill.CommandAction;
-import com.company.model.Bill;
 import com.company.model.Deposit;
-import com.company.services.BillService;
 import com.company.services.DepositService;
 import lombok.extern.log4j.Log4j;
 
@@ -37,17 +35,6 @@ class DepositCommandNew implements CommandAction {
         try {
             Optional<String> errorMessage = depositService.create(deposit);
             if (errorMessage.isPresent()) {
-
-//                final BillService billService = new BillService();
-//                Optional<Bill> bill = billService.findById(billId);
-//                if (bill.isPresent()) {
-//                    request.setAttribute("bill", bill.get());
-//                } else {
-//                    log.warn("Expected bill id:" + billId + " when create deposit, bill id must exist. Can't allow creating without bill!");
-//                    request.setAttribute("errorMessage", "Service is temporarily unavailable!");
-//                    dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
-//                    dispatcher.forward(request, response);
-//                }
                 request.setAttribute("errorMessage", errorMessage.get());
                 dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
                 dispatcher.forward(request, response);

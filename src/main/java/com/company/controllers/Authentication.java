@@ -36,10 +36,6 @@ public class Authentication extends HttpServlet {
                     session.setAttribute("activeUser", activeUser);
                 }
 
-//                BillService billService = new BillService();
-//                Iterable<Bill> bills = billService.findAllByAccountId(id.get());
-//                request.setAttribute("bills", bills);
-
                 dispatcher = getServletContext().getRequestDispatcher("/jsp/bills.jsp");
                 dispatcher.forward(request, response);
             } else {
@@ -48,7 +44,6 @@ public class Authentication extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             log.warn(e.getMessage());
             request.setAttribute("errorMessage", "Authentication is temporarily unavailable!");
             dispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");

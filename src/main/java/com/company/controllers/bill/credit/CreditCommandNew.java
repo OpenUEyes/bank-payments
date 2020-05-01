@@ -47,17 +47,6 @@ class CreditCommandNew implements CommandAction {
         try {
             Optional<String> errorMessage = creditService.create(credit);
             if (errorMessage.isPresent()) {
-
-//                final BillService billService = new BillService();
-//                Optional<Bill> bill = billService.findById(billId);
-//                if (bill.isPresent()) {
-//                    request.setAttribute("bill", bill.get());
-//                } else {
-//                    log.warn("Expected bill id:" + billId + " when create credit, bill id must exist. Can't allow creating without bill!");
-//                    request.setAttribute("errorMessage", "Service is temporarily unavailable!");
-//                    dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
-//                    dispatcher.forward(request, response);
-//                }
                 request.setAttribute("errorMessage", errorMessage.get());
                 dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
                 dispatcher.forward(request, response);
