@@ -28,7 +28,8 @@ public class AccountRepository extends CrudRepository<Account> {
     private static final String SQL_GET_ID = "SELECT id FROM account WHERE (login, password) = (?, ?)";
 
     @Override
-    public void create(Account account) throws SQLException {
+    public Optional<String> create(Account account) throws SQLException {
+        Optional<String> result = Optional.empty();
         Connection connection = null;
         try {
             connection = ConnectionPull.getConnection();
@@ -44,6 +45,7 @@ public class AccountRepository extends CrudRepository<Account> {
         } finally {
             ConnectionPull.closeConnection(connection);
         }
+        return result;
     }
 
     private void accountFill(Account account, PreparedStatement preparedStatement) throws SQLException {

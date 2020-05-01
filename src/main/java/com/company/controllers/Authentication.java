@@ -1,8 +1,7 @@
 package com.company.controllers;
 
-import com.company.model.Bill;
+import com.company.listeners.ActiveUser;
 import com.company.services.AccountService;
-import com.company.services.BillService;
 import lombok.extern.log4j.Log4j;
 
 import javax.servlet.RequestDispatcher;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.Set;
 
 @Log4j
 @WebServlet(urlPatterns = "/authentication")
@@ -32,9 +30,15 @@ public class Authentication extends HttpServlet {
             if (id.isPresent()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("accountId", id.get());
-                BillService billService = new BillService();
-                Iterable<Bill> bills = billService.findAllByAccountId(id.get());
-                request.setAttribute("bills", bills);
+                ActiveUser activeUser = (ActiveUser) session.getAttribute("activeUser");
+                if (activeUser == null) {
+                    activeUser = new ActiveUser(id.get());
+                    session.setAttribute("activeUser", activeUser);
+                }
+
+//                BillService billService = new BillService();
+//                Iterable<Bill> bills = billService.findAllByAccountId(id.get());
+//                request.setAttribute("bills", bills);
 
                 dispatcher = getServletContext().getRequestDispatcher("/jsp/bills.jsp");
                 dispatcher.forward(request, response);

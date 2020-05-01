@@ -28,6 +28,11 @@
                     <hr>
                     <div class="money-wrapper">
                         <h2 class="content-header">You can take a credit or put a deposit</h2>
+                        <c:if test="${not empty errorMessage}">
+                            <div class="content-header error">
+                                <p>${errorMessage}</p>
+                            </div>
+                        </c:if>
                         <div class="money-service">
                             <div class="form form-credit">
                                 <h3 class="header">Take credit is simple:</h3>
@@ -35,12 +40,6 @@
                                 <form class="body" method="POST" action="${pageContext.request.contextPath}/credit">
                                     <input type="hidden" name="action" value="new">
                                     <input type="hidden" name="id" value="${bill.id}">
-
-                                    <c:if test="${not empty errorMessage}">
-                                        <div class="error">
-                                            <p>${errorMessage}</p>
-                                        </div>
-                                    </c:if>
                                     <div class="input">
                                         <label for="creditAmount">Amount:</label>
                                         <input class="currency" id="creditAmount" type="text" name="amount" value=""
@@ -55,11 +54,6 @@
                                 <form class="body" method="POST" action="${pageContext.request.contextPath}/deposit">
                                     <input type="hidden" name="action" value="new">
                                     <input type="hidden" name="id" value="${bill.id}">
-                                    <c:if test="${not empty errorMessage}">
-                                        <div class="error">
-                                            <p>${errorMessage}</p>
-                                        </div>
-                                    </c:if>
                                     <div class="input">
                                         <label for="depositAmount">Amount:</label>
                                         <input class="currency" id="depositAmount" type="text" name="amount" value=""

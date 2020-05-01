@@ -12,8 +12,7 @@ public class CreditService implements CrudService<Credit> {
 
     @Override
     public Optional<String> create(Credit credit) throws SQLException {
-        repository.create(credit);
-        return Optional.empty();
+        return repository.create(credit);
     }
 
     @Override
@@ -24,6 +23,10 @@ public class CreditService implements CrudService<Credit> {
     @Override
     public Optional<Credit> findById(Long id) throws SQLException {
         return repository.findById(id);
+    }
+
+    public Optional<Credit> findById(Long billId, Long accountId) throws SQLException {
+        return repository.findById(billId, accountId);
     }
 
     @Override

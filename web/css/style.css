@@ -53,20 +53,8 @@ header {
     .navbar .input:hover {
       background-color: #777;
       color: white; }
-    .navbar .input .submit {
-      position: absolute;
-      background: none;
-      outline: none;
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 0;
-      cursor: pointer; }
-      .navbar .input .submit:hover {
-        background: radial-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
-        border-radius: 0; }
-      .navbar .input .submit:active, .navbar .input .submit:focus {
-        box-shadow: 0 0 50px 30px rgba(153, 0, 144, 0.3); }
+  .navbar .logout {
+    color: indianred; }
 
 main {
   margin-top: 10vh;

@@ -13,7 +13,7 @@ public abstract class CrudRepository<T> {
 
     private static final String SQL_DELETE = "DELETE FROM account WHERE (id) = (?)";
 
-    abstract void create(T entity) throws SQLException;
+    abstract Optional<String> create(T entity) throws SQLException;
 
     abstract void update(T entity) throws SQLException;
 

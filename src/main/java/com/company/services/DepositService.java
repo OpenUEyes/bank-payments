@@ -12,7 +12,7 @@ public class DepositService implements CrudService<Deposit> {
 
     @Override
     public Optional<String> create(Deposit deposit) throws SQLException {
-        return repository.put(deposit);
+        return repository.create(deposit);
     }
 
     @Override
@@ -23,6 +23,10 @@ public class DepositService implements CrudService<Deposit> {
     @Override
     public Optional<Deposit> findById(Long id) throws SQLException {
         return repository.findById(id);
+    }
+
+    public Optional<Deposit> findById(Long billId, Long accountId) throws SQLException {
+        return repository.findById(billId, accountId);
     }
 
     @Override

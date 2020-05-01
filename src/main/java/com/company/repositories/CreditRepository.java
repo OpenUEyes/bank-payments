@@ -13,11 +13,14 @@ public class CreditRepository extends CrudRepository<Credit> {
 
     private static final String SQL_CREATE = "INSERT INTO credit(id, debt, `limit`, percentage, start, deadline) VALUES(?, ?, ?, ?, ?, ?)";
     private static final String SQL_FIND_BY_CREDIT_ID = "SELECT * FROM credit WHERE (id) = (?)";
+    private static final String SQL_FIND_BY_CREDIT_ID_ACCOUNT_ID = "SELECT * FROM credit c JOIN bill b ON c.id = b.id WHERE (c.id, b.account_id) = (?, ?)";
     private static final String SQL_FIND_BY_BILL_ID = "SELECT * FROM bill WHERE (id) = (?)";
     private static final String SQL_UPDATE_BILL = "UPDATE bill SET type = ?, balance = ?  WHERE id = ?";
 
     @Override
-    public void create(Credit credit) throws SQLException {
+    public Optional<String> create(Credit credit) throws SQLException {
+        Optional<String> result = Optional.empty();
+
         Connection connection = null;
         try {
             connection = ConnectionPull.getConnection();
@@ -65,6 +68,7 @@ public class CreditRepository extends CrudRepository<Credit> {
             }
             ConnectionPull.closeConnection(connection);
         }
+        return result;
     }
 
     @Override
@@ -80,6 +84,38 @@ public class CreditRepository extends CrudRepository<Credit> {
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_CREDIT_ID)) {
                 ps.setLong(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultCredit = Optional.of(Credit.builder()
+                            .id(rs.getLong(1))
+                            .debt(rs.getDouble(2))
+                            .limit(rs.getDouble(3))
+                            .percentage(rs.getDouble(4))
+                            .start(((Date) rs.getObject(5)).toLocalDate())
+                            .deadline(((Date) rs.getObject(6)).toLocalDate())
+                            .build());
+                }
+            }
+
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+
+        return resultCredit;
+    }
+
+    public Optional<Credit> findById(Long creditId, Long accountId) throws SQLException {
+        Connection connection = null;
+        Optional<Credit> resultCredit = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_CREDIT_ID_ACCOUNT_ID)) {
+                ps.setLong(1, creditId);
+                ps.setLong(2, accountId);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     resultCredit = Optional.of(Credit.builder()

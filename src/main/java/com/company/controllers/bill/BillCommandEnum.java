@@ -2,11 +2,11 @@ package com.company.controllers.bill;
 
 enum BillCommandEnum{
 
-    GET {
-        {
-            this.command = new BillCommandGet();
-        }
-    },
+//    GET {
+//        {
+//            this.command = new BillCommandGet();
+//        }
+//    },
 
     NEW {
         {

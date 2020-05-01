@@ -112,7 +112,10 @@ header {
       color: white;
     }
 
-    @include submit();
+  }
+
+  .logout {
+    color:indianred;
   }
 }
 

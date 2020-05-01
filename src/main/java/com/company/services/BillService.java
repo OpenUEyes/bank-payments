@@ -12,8 +12,7 @@ public class BillService implements CrudService<Bill> {
 
     @Override
     public Optional<String> create(Bill bill) throws SQLException {
-        repository.create(bill);
-        return Optional.empty();
+        return repository.create(bill);
     }
 
     @Override
@@ -24,6 +23,10 @@ public class BillService implements CrudService<Bill> {
     @Override
     public Optional<Bill> findById(Long id) throws SQLException {
         return repository.findById(id);
+    }
+
+    public Optional<Bill> findById(Long billId, Long accountId) throws SQLException {
+        return repository.findById(billId, accountId);
     }
 
     @Override

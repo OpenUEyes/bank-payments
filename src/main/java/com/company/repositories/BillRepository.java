@@ -18,11 +18,14 @@ public class BillRepository extends CrudRepository<Bill> {
     private static final String SQL_UPDATE_BALANCE = "UPDATE bill SET balance = ? WHERE id = ?";
     private static final String SQL_FIND_ALL = "SELECT * FROM bill";
     private static final String SQL_FIND_BY_BILL_ID = "SELECT * FROM bill WHERE (id) = (?)";
+    private static final String SQL_FIND_BY_BILL_ID_ACCOUNT_ID = "SELECT * FROM bill WHERE (id, account_id) = (?, ?)";
     private static final String SQL_FIND_BY_ACCOUNT_ID = "SELECT * FROM bill WHERE (account_id) = (?)";
     private static final String SQL_DELETE = "DELETE FROM bill WHERE (id) = (?)";
 
     @Override
-    public void create(Bill bill) throws SQLException {
+    public Optional<String> create(Bill bill) throws SQLException {
+        Optional<String> result = Optional.empty();
+
         Connection connection = null;
         try {
             connection = ConnectionPull.getConnection();
@@ -42,6 +45,7 @@ public class BillRepository extends CrudRepository<Bill> {
         } finally {
             ConnectionPull.closeConnection(connection);
         }
+        return result;
     }
 
     @Override
@@ -94,6 +98,37 @@ public class BillRepository extends CrudRepository<Bill> {
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_BILL_ID)) {
                 ps.setLong(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultBill = Optional.of(Bill.builder()
+                            .id(rs.getLong(1))
+                            .number(String.format("%016d", rs.getLong(1)))
+                            .type(Type.valueOf(rs.getString(2)))
+                            .balance(rs.getDouble(3))
+                            .validity(((Date) rs.getObject(4)).toLocalDate())
+                            .build());
+                }
+            }
+
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+
+        return resultBill;
+    }
+
+    public Optional<Bill> findById(Long billId, Long accountId) throws SQLException {
+        Connection connection = null;
+        Optional<Bill> resultBill = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_BILL_ID_ACCOUNT_ID)) {
+                ps.setLong(1, billId);
+                ps.setLong(2, accountId);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     resultBill = Optional.of(Bill.builder()

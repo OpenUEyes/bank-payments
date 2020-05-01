@@ -25,7 +25,7 @@ public class AccountService implements CrudService<Account> {
         if (result.isPresent()) {
             return result;
         }
-        repository.create(account);
+        result = repository.create(account);
 
         return result;
     }

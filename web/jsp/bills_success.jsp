@@ -10,7 +10,7 @@
         <main>
             <div class="content bg-reg-success">
                 <h3 class="content-header">Action was successful</h3>
-                <form class="form form-bill" method="POST" action="${pageContext.request.contextPath}/bill">
+                <form class="form form-bill" method="POST" action="${pageContext.request.contextPath}/jsp/bills.jsp">
                     <h4 class="header">Continue</h4>
                     <button class="submit" type="submit"></button>
                 </form>

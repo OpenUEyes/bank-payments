@@ -25,11 +25,14 @@ class CreditCommandNew implements CommandAction {
         RequestDispatcher dispatcher;
         Double limit = 10000.0;
         Double amount = Double.valueOf(request.getParameter("amount"));
-//        if (limit < amount) {
-//            request.setAttribute("errorMessage", "Amount: " + amount + " should be less or equal limit: " + limit);
-//            dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
-//            dispatcher.forward(request, response);
-//        } // TODO validation
+        if (limit < amount) {
+            request.setAttribute("errorMessage", "Amount: " + amount + " should be less or equal limit: " + limit);
+            dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        System.out.println("continue");
         Long billId = Long.valueOf(request.getParameter("id"));
         Credit credit = Credit.builder()
                 .id(billId)
@@ -45,16 +48,16 @@ class CreditCommandNew implements CommandAction {
             Optional<String> errorMessage = creditService.create(credit);
             if (errorMessage.isPresent()) {
 
-                final BillService billService = new BillService();
-                Optional<Bill> bill = billService.findById(billId);
-                if (bill.isPresent()) {
-                    request.setAttribute("bill", bill.get());
-                } else {
-                    log.warn("Expected bill id:" + billId + " when create credit, bill id must exist. Can't allow creating without bill!");
-                    request.setAttribute("errorMessage", "Service is temporarily unavailable!");
-                    dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
-                    dispatcher.forward(request, response);
-                }
+//                final BillService billService = new BillService();
+//                Optional<Bill> bill = billService.findById(billId);
+//                if (bill.isPresent()) {
+//                    request.setAttribute("bill", bill.get());
+//                } else {
+//                    log.warn("Expected bill id:" + billId + " when create credit, bill id must exist. Can't allow creating without bill!");
+//                    request.setAttribute("errorMessage", "Service is temporarily unavailable!");
+//                    dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
+//                    dispatcher.forward(request, response);
+//                }
                 request.setAttribute("errorMessage", errorMessage.get());
                 dispatcher = request.getServletContext().getRequestDispatcher("/jsp/bill.jsp");
                 dispatcher.forward(request, response);

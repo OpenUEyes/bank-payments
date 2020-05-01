@@ -14,13 +14,11 @@ public class DepositRepository extends CrudRepository<Deposit> {
     private static final String SQL_CREATE = "INSERT INTO deposit(id, amount, rate, start, finish) VALUES(?, ?, ?, ?, ?)";
     private static final String SQL_FIND_BY_BILL_ID = "SELECT * FROM bill WHERE (id) = (?)";
     private static final String SQL_FIND_BY_DEPOSIT_ID = "SELECT * FROM deposit WHERE (id) = (?)";
+    private static final String SQL_FIND_BY_DEPOSIT_ID_ACCOUNT_ID = "SELECT * FROM deposit d JOIN bill b ON d.id = b.id WHERE (d.id, b.account_id) = (?, ?)";
     private static final String SQL_UPDATE_BILL = "UPDATE bill SET type = ?, balance = ?  WHERE id = ?";
 
     @Override
-    public void create(Deposit entity) throws SQLException {
-    }
-
-    public Optional<String> put(Deposit deposit) throws SQLException {
+    public Optional<String> create(Deposit deposit) throws SQLException {
         Connection connection = null;
 
         Optional<String> result = Optional.empty();
@@ -91,6 +89,38 @@ public class DepositRepository extends CrudRepository<Deposit> {
 
             try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_DEPOSIT_ID)) {
                 ps.setLong(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    resultDeposit = Optional.of(Deposit.builder()
+                            .id(rs.getLong(1))
+                            .amount(rs.getDouble(2))
+                            .rate(rs.getDouble(3))
+                            .start(((Date) rs.getObject(4)).toLocalDate())
+                            .finish(((Date) rs.getObject(5)).toLocalDate())
+                            .build());
+                }
+            }
+
+        } catch (SQLException exception) {
+            log.warn(exception.getMessage());
+            throw exception;
+        } finally {
+            ConnectionPull.closeConnection(connection);
+        }
+
+        return resultDeposit;
+    }
+
+    public Optional<Deposit> findById(Long depositId, Long accountId) throws SQLException {
+
+        Connection connection = null;
+        Optional<Deposit> resultDeposit = Optional.empty();
+        try {
+            connection = ConnectionPull.getConnection();
+
+            try (PreparedStatement ps = connection.prepareStatement(SQL_FIND_BY_DEPOSIT_ID_ACCOUNT_ID)) {
+                ps.setLong(1, depositId);
+                ps.setLong(2, accountId);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     resultDeposit = Optional.of(Deposit.builder()
